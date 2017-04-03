@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-27T16:01:47.221Z</updated>
+  <updated>2017-03-30T15:15:56.660Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,24 +16,86 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>UML 类图常见关系</title>
+    <link href="http://yoursite.com/2017/03/30/UML-%E7%B1%BB%E5%9B%BE%E5%B8%B8%E8%A7%81%E5%85%B3%E7%B3%BB/"/>
+    <id>http://yoursite.com/2017/03/30/UML-类图常见关系/</id>
+    <published>2017-03-30T14:21:36.000Z</published>
+    <updated>2017-03-30T15:15:56.660Z</updated>
+    
+    <content type="html"><![CDATA[<p>Wiki中给出UML的定义，旨在可视化系统设计。</p>
+<blockquote>
+<p>The Unified Modeling Language (UML) is a general-purpose, developmental, modeling language in the field of software engineering, that is intended to provide a standard way to visualize the design of a system. </p>
+</blockquote>
+<p>在面向对象编程中，UML用于绘制需求分析时的用例图（功能模型），系统设计时的类图（对象模型），系统实现时的时序图，状态图（动态模型）等。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Wiki中给出UML的定义，旨在可视化系统设计。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The Unified Modeling Language (UML) is a general-purpose, developmental, modeling language i
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="UML" scheme="http://yoursite.com/tags/UML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java 对象序列化</title>
+    <link href="http://yoursite.com/2017/03/28/Java-%E5%AF%B9%E8%B1%A1%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <id>http://yoursite.com/2017/03/28/Java-对象序列化/</id>
+    <published>2017-03-28T02:56:24.000Z</published>
+    <updated>2017-03-28T02:56:24.326Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Java IO浅析</title>
     <link href="http://yoursite.com/2017/03/22/Java-IO%E6%B5%85%E6%9E%90/"/>
     <id>http://yoursite.com/2017/03/22/Java-IO浅析/</id>
     <published>2017-03-22T06:30:19.000Z</published>
-    <updated>2017-03-27T16:01:47.221Z</updated>
+    <updated>2017-04-03T05:44:14.488Z</updated>
     
     <content type="html"><![CDATA[<p>Java IO即Java中的输入(Input)和输出(Output)。<br>Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，根据操作接口的不同，可以分为基于字节的读写(InputStream, OutputStream)和基于字符的读写(Reader, Writer)。<br>本文将分别介绍这四个类家族及家族间的关系。</p>
 <p>ps:本文类图参照<strong>JDK 8</strong>源码</p>
-<h2 id="InputStream家族"><a href="#InputStream家族" class="headerlink" title="InputStream家族"></a>InputStream家族</h2><p>InputStream家族包括类InputStream及其子孙类，类图如下图所示。<br><img src="/images/InputStream.png" alt="InputStream家族类图"></p>
-<ol>
+<h2 id="InputStream家族"><a href="#InputStream家族" class="headerlink" title="InputStream家族"></a>InputStream家族</h2><p>InputStream家族包括类InputStream及其子孙类，类图如下图所示。<br><img src="/images/diagram.png" alt="InputStream家族类图"></p>
+<ul>
 <li>AutoCloseable和Closeable接口，AutoCloseable是在JDK 7新加入的接口，它使得<a href="http://blog.csdn.net/fireofjava/article/details/7220754" target="_blank" rel="external"><code>try-with-resources</code></a>成为可能，同时改善了Closeable接口中close方法抛出IOException的局限，选择抛出Exception。为了向前兼容，选择让Closeable接口继承AutoCloseable，专门定义IO读写中资源的关闭。</li>
 <li>InputStream类，抽象类，定义了子类必须实现的<code>int read() throw IOException</code>的抽象方法。</li>
-<li>FileInputStream类，通过JNI实现了从某个文件中读取的<code>read()</code>方法。</li>
+<li>FileInputStream类，通过JNI实现了从某个文件中读取数据的<code>read()</code>方法及其重载方法。</li>
 <li>AudioInputStream类，对stream字节流组装成“帧”，<code>read()</code>方法及重载方法只能读取若干帧。</li>
 <li>ByteArrayInputStream类，将一个字节数组作为输入流进行读取。</li>
 <li>PipedInputStream类，用于多线程间的管道通讯，线程A从PipedInputStream的缓冲数组中读取数据，线程B利用PipedOutputStream向PipedInputStream的缓冲数组写入数据，从而完成通讯。</li>
-<li>SequenceInputStream类，</li>
-</ol>
+<li>SequenceInputStream类，将多个InputStream首尾连接，作为一个输入流来读取。</li>
+<li>ObjectInputStream类，和ObjectOutputStream对应，分别用于类的序列化中对象的读和写，<a href="../../../../2017/03/28/Java-%E5%AF%B9%E8%B1%A1%E5%BA%8F%E5%88%97%E5%8C%96/">详情</a>。</li>
+<li>FilterInputStream类，对输入流<code>in</code>进行过滤，加工，诸多子类通过重写<code>read()</code>及其重载方法自定义过滤方式，呈现不同功能。</li>
+<li>BufferedInputStream类，为输入流<code>in</code>设置缓冲区，每次直接从缓冲区中读取，并根据上次mark的位置动态的调整并填充缓冲区。</li>
+<li>DataInputStream类，对输入字节流<code>in</code>进行解析，组装成基本类型和UTF字符串。</li>
+<li>DeflaterInputStream类，对输入流<code>in</code>进行deflate压缩，读取的是压缩后的字节流。</li>
+<li>InflaterInputStream类，对deflate压缩流<code>in</code>进行解压，读取的是解压后的字节流。</li>
+<li>LineNumberInputStream类，<font color="red">Deprecated</font>，将字节流看成是字符流，如遇到’\n’,’\r’,’\r\n’，则行数加一。</li>
+<li>PushBackInputStream类，允许在对输入流读取时撤销读，比如在LineNumberInputStream中需要预取下一个字符，判断是否换行符，如果不是，需要撤销这次读。</li>
+<li>DigestInputStream类，使用MessageDigest对输入流<code>in</code>提取摘要，读取的是摘要的字节流。</li>
+</ul>
+<h2 id="Reader家族"><a href="#Reader家族" class="headerlink" title="Reader家族"></a>Reader家族</h2><p>Reader家族包括类Reader及其子孙类，类图如下图所示。<br><img src="/images/Reader.png" alt="Reader家族类图"></p>
+<ul>
+<li>Readable接口，定义了<code>int read(java.nio.CharBuffer cb)</code>接口，供调用者读取可读的字符流。</li>
+<li>Reader抽象类，定义了子类需实现的抽象方法，<code>int read(char cbuf[], int off, int len)</code>。</li>
+<li>CharArrayReader类，使用缓冲数组<code>buf</code>作为字符输入流。</li>
+<li>StringReader类，使用字符串<code>str</code>作为字符输入流。</li>
+<li></li>
+</ul>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>]]></content>
     
     <summary type="html">

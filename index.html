@@ -1,15 +1,1009 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="期待自己的星辰"><title>星空 | 记录浩瀚星空的点滴</title><link rel="stylesheet" type="text/css" href="//fonts.css.network/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.2.0"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=1.2.0"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">星空</h1><a id="logo" href="/.">星空</a><p class="description">记录浩瀚星空的点滴</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h2 class="post-title"><a href="/2017/03/22/Java-IO浅析/">Java IO浅析</a></h2><div class="post-meta">2017-03-22</div><a data-thread-key="2017/03/22/Java-IO浅析/" href="/2017/03/22/Java-IO浅析/#comments" class="ds-thread-count"></a><div class="post-content"><p>Java IO即Java中的输入(Input)和输出(Output)。<br>Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，根据操作接口的不同，可以分为基于字节的读写(InputStream, OutputStream)和基于字符的读写(Reader, Writer)。<br>本文将分别介绍这四个类家族及家族间的关系。</p></div><p class="readmore"><a href="/2017/03/22/Java-IO浅析/">阅读更多</a></p></div><div class="post"><h2 class="post-title"><a href="/2016/06/05/sorting/">基本排序</a></h2><div class="post-meta">2016-06-05</div><a data-thread-key="2016/06/05/sorting/" href="/2016/06/05/sorting/#comments" class="ds-thread-count"></a><div class="post-content"><p>排序根据算法的复杂度（平均复杂度）可以大致分为一下三类： </p></div><p class="readmore"><a href="/2016/06/05/sorting/">阅读更多</a></p></div></div></div><div class="layout-r"><div id="sidebar"><div class="widget"><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="请输入关键字..."/></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法与数据结构/">算法与数据结构</a><span class="category-list-count">1</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/IO/" style="font-size: 15px;">IO</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-fei"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/Java-IO浅析/">Java IO浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/sorting/">基本排序</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-commt"> 最近评论</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div></div></div></div><a id="totop" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.2.0" async></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="星空" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="期待自己的星辰">
+<meta property="og:type" content="website">
+<meta property="og:title" content="星空">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="星空">
+<meta property="og:description" content="期待自己的星辰">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="星空">
+<meta name="twitter:description" content="期待自己的星辰">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 星空 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">星空</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">记录浩瀚星空的点滴</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/30/UML-类图常见关系/" itemprop="url">
+                  UML 类图常见关系
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-30T22:21:36+08:00" content="2017-03-30">
+              2017-03-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/30/UML-类图常见关系/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/30/UML-类图常见关系/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Wiki中给出UML的定义，旨在可视化系统设计。</p>
+<blockquote>
+<p>The Unified Modeling Language (UML) is a general-purpose, developmental, modeling language in the field of software engineering, that is intended to provide a standard way to visualize the design of a system. </p>
+</blockquote>
+<p>在面向对象编程中，UML用于绘制需求分析时的用例图（功能模型），系统设计时的类图（对象模型），系统实现时的时序图，状态图（动态模型）等。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/28/Java-对象序列化/" itemprop="url">
+                  Java 对象序列化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-28T10:56:24+08:00" content="2017-03-28">
+              2017-03-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/28/Java-对象序列化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/28/Java-对象序列化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/22/Java-IO浅析/" itemprop="url">
+                  Java IO浅析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-22T14:30:19+08:00" content="2017-03-22">
+              2017-03-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/22/Java-IO浅析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/22/Java-IO浅析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java IO即Java中的输入(Input)和输出(Output)。<br>Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，根据操作接口的不同，可以分为基于字节的读写(InputStream, OutputStream)和基于字符的读写(Reader, Writer)。<br>本文将分别介绍这四个类家族及家族间的关系。</p>
+<p>ps:本文类图参照<strong>JDK 8</strong>源码</p>
+<h2 id="InputStream家族"><a href="#InputStream家族" class="headerlink" title="InputStream家族"></a>InputStream家族</h2><p>InputStream家族包括类InputStream及其子孙类，类图如下图所示。<br><img src="/images/diagram.png" alt="InputStream家族类图"></p>
+<ul>
+<li>AutoCloseable和Closeable接口，AutoCloseable是在JDK 7新加入的接口，它使得<a href="http://blog.csdn.net/fireofjava/article/details/7220754" target="_blank" rel="external"><code>try-with-resources</code></a>成为可能，同时改善了Closeable接口中close方法抛出IOException的局限，选择抛出Exception。为了向前兼容，选择让Closeable接口继承AutoCloseable，专门定义IO读写中资源的关闭。</li>
+<li>InputStream类，抽象类，定义了子类必须实现的<code>int read() throw IOException</code>的抽象方法。</li>
+<li>FileInputStream类，通过JNI实现了从某个文件中读取数据的<code>read()</code>方法及其重载方法。</li>
+<li>AudioInputStream类，对stream字节流组装成“帧”，<code>read()</code>方法及重载方法只能读取若干帧。</li>
+<li>ByteArrayInputStream类，将一个字节数组作为输入流进行读取。</li>
+<li>PipedInputStream类，用于多线程间的管道通讯，线程A从PipedInputStream的缓冲数组中读取数据，线程B利用PipedOutputStream向PipedInputStream的缓冲数组写入数据，从而完成通讯。</li>
+<li>SequenceInputStream类，将多个InputStream首尾连接，作为一个输入流来读取。</li>
+<li>ObjectInputStream类，和ObjectOutputStream对应，分别用于类的序列化中对象的读和写，<a href="../../../../2017/03/28/Java-%E5%AF%B9%E8%B1%A1%E5%BA%8F%E5%88%97%E5%8C%96/">详情</a>。</li>
+<li>FilterInputStream类，对输入流<code>in</code>进行过滤，加工，诸多子类通过重写<code>read()</code>及其重载方法自定义过滤方式，呈现不同功能。</li>
+<li>BufferedInputStream类，为输入流<code>in</code>设置缓冲区，每次直接从缓冲区中读取，并根据上次mark的位置动态的调整并填充缓冲区。</li>
+<li>DataInputStream类，对输入字节流<code>in</code>进行解析，组装成基本类型和UTF字符串。</li>
+<li>DeflaterInputStream类，对输入流<code>in</code>进行deflate压缩，读取的是压缩后的字节流。</li>
+<li>InflaterInputStream类，对deflate压缩流<code>in</code>进行解压，读取的是解压后的字节流。</li>
+<li>LineNumberInputStream类，<font color="red">Deprecated</font>，将字节流看成是字符流，如遇到’\n’,’\r’,’\r\n’，则行数加一。</li>
+<li>PushBackInputStream类，允许在对输入流读取时撤销读，比如在LineNumberInputStream中需要预取下一个字符，判断是否换行符，如果不是，需要撤销这次读。</li>
+<li>DigestInputStream类，使用MessageDigest对输入流<code>in</code>提取摘要，读取的是摘要的字节流。</li>
+</ul>
+<h2 id="Reader家族"><a href="#Reader家族" class="headerlink" title="Reader家族"></a>Reader家族</h2><p>Reader家族包括类Reader及其子孙类，类图如下图所示。<br><img src="/images/Reader.png" alt="Reader家族类图"></p>
+<ul>
+<li>Readable接口，定义了<code>int read(java.nio.CharBuffer cb)</code>接口，供调用者读取可读的字符流。</li>
+<li>Reader抽象类，定义了子类需实现的抽象方法，<code>int read(char cbuf[], int off, int len)</code>。</li>
+<li>CharArrayReader类，使用缓冲数组<code>buf</code>作为字符输入流。</li>
+<li>StringReader类，使用字符串<code>str</code>作为字符输入流。</li>
+<li></li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/05/sorting/" itemprop="url">
+                  基本排序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-06-05T17:09:28+08:00" content="2016-06-05">
+              2016-06-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/算法与数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/05/sorting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/05/sorting/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>排序根据算法的复杂度（平均复杂度）可以大致分为一下三类： </p>
+<ol>
+<li>$O(n^2)$：冒泡排序（Bubble Sort），插入排序（Inserttion Sort），选择排序（Selection Sort）</li>
+<li>$O(nlogn)$：归并排序（Merge Sort），堆排序（Heap Sort），快速排序（Quick Sort）</li>
+<li>$O(n)$：计数排序（Counting Sort），基数排序（Radix Sort）</li>
+</ol>
+<p>排序根据算法的稳定性（对于相同的元素是否能够在排序前后保证相对顺序），可以两类：</p>
+<ol>
+<li>稳定排序：冒泡排序（Bubble Sort），插入排序（Inserttion Sort），归并排序（Merge Sort），计数排序（Counting Sort），计数排序（Counting Sort）</li>
+<li>不稳定排序：选择排序（Selection Sort），快速排序（Quick Sort），堆排序（Heap Sort）</li>
+</ol>
+<h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>冒泡排序是模拟气泡从水底部上浮的过程，对于一个待排序的序列而言，较小的数会一直向上“浮”，直至所有的较小的数都在较大数的上面（左边），就完成了排序。以下为Java实现， 可以看出冒泡排序是稳定排序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = nums.length - <span class="number">2</span>; j &gt;= <span class="number">0</span>; j--) &#123;</div><div class="line">            <span class="keyword">if</span>(nums[j] &gt; nums[j+<span class="number">1</span>]) &#123;</div><div class="line">                <span class="keyword">int</span> tmp = nums[j+<span class="number">1</span>];</div><div class="line">                nums[j+<span class="number">1</span>] = nums[j];</div><div class="line">                nums[j] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><p>插入排序主要是通过将当前元素插入到前面已经排好序的序列当中来完成排序。以下为Java实现。插入排序有一种双排的实现方式，每次考虑两个元素$a$, $b$$（a&gt;b）$，先排好$a$，接着从$a$的位置排$b$，可以减少比较次数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span>; j--) &#123;</div><div class="line">            <span class="keyword">if</span>(nums[j-<span class="number">1</span>] &gt; nums[j]) &#123;</div><div class="line">                <span class="keyword">int</span> tmp = nums[j];</div><div class="line">                nums[j] = nums[j-<span class="number">1</span>];</div><div class="line">                nums[j-<span class="number">1</span>] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>每次选择未排序序列的最小值，追加到已排好序列的末端。一下为Java实现，选择排序为不稳定排序，如3，3，1。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">         <span class="keyword">int</span> min = nums[i], pos = i;</div><div class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; nums.length; j++) &#123;</div><div class="line">             <span class="keyword">if</span>(nums[j] &lt; min) &#123;</div><div class="line">                 min = nums[j];  pos = j;</div><div class="line">             &#125;</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span>(pos != i) &#123;</div><div class="line">             <span class="keyword">int</span> tmp = nums[i];</div><div class="line">             nums[i] = nums[pos];</div><div class="line">             nums[pos] = tmp;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>归并排序，从名字上就可以大致看出来有归一合并的过程。将n长度的排序问题分解成长度相等$（\frac n2， n-\frac n2）$的排序子问题，之后将子问题的结果（两个排好序的子序列）合并成一个序列，完成排序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">     <span class="keyword">int</span> mid = (left + right)/<span class="number">2</span>;</div><div class="line">     <span class="keyword">int</span>[] tmp = <span class="keyword">new</span> <span class="keyword">int</span>[right - left + <span class="number">1</span>];</div><div class="line">     <span class="keyword">int</span> cnta = left, cntb = mid+<span class="number">1</span>, cnt = <span class="number">0</span>;</div><div class="line">     <span class="keyword">while</span> (cnta &lt;= mid &amp;&amp; cntb &lt;= right) &#123;</div><div class="line">         <span class="keyword">if</span>(nums[cnta] &gt; nums[cntb])  tmp[cnt++] = nums[cntb++];</div><div class="line">         <span class="keyword">else</span>                         tmp[cnt++] = nums[cnta++];</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">while</span> (cnta &lt;= mid)  tmp[cnt++] = nums[cnta++];</div><div class="line">     <span class="keyword">while</span> (cntb &lt;= right)   tmp[cnt++] = nums[cntb++];</div><div class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = left; i &lt;= right; i++)  nums[i] = tmp[i-left];</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</div><div class="line">     <span class="keyword">if</span>(left &gt;= right)   <span class="keyword">return</span>;</div><div class="line">     <span class="keyword">int</span> mid = (left + right)/<span class="number">2</span>;</div><div class="line">     mergeSort(nums, left, mid);</div><div class="line">     mergeSort(nums, mid+<span class="number">1</span>, right);</div><div class="line">     merge(nums, left, right);</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>堆排序是利用最大堆的特性（根是所有对结点中键值最大的），首先构建堆（$O(n)$），每次将根与堆的最后一个元素进行交换，并且将堆的大小减少1（并没有把最后的堆元素删除），调整堆使其保证最大堆的特性，当堆的大小减为1时，再层次遍历堆，完成排序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//建堆</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">buildHeap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> size)</span> </span>&#123;  </div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = (size &gt;&gt;&gt;<span class="number">1</span>); i &gt;= <span class="number">1</span>; i--) &#123;</div><div class="line">        heapify(nums, size, i);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//调整堆</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapify</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> size, <span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> l = i &lt;&lt; <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> r = (i &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> largest  = i;</div><div class="line">    <span class="keyword">if</span>(l &lt;= size &amp;&amp; nums[l] &gt; nums[i])</div><div class="line">        largest = l;</div><div class="line">    <span class="keyword">if</span>(r &lt;= size &amp;&amp; nums[r] &gt; nums[largest])</div><div class="line">        largest = r;</div><div class="line">    <span class="keyword">if</span>(largest != i) &#123;</div><div class="line">        <span class="keyword">int</span> tmp = nums[largest];</div><div class="line">        nums[largest] = nums[i];</div><div class="line">        nums[i] = tmp;</div><div class="line">        heapify(nums, size, largest);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//堆排序</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> size)</span> </span>&#123;        <span class="comment">//nums从1开始, size是数据的实际大小（不包括下标为0的元素）</span></div><div class="line">    buildHeap(nums, size);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = size; i &gt;= <span class="number">2</span>; i--) &#123;</div><div class="line">        <span class="keyword">int</span> tmp = nums[i];</div><div class="line">        nums[i] = nums[<span class="number">1</span>];</div><div class="line">        nums[<span class="number">1</span>] = tmp;</div><div class="line">        heapify(nums, i-<span class="number">1</span>, <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><p>和归并排序相同，快排采用分治的策略，在序列中选取一个$pivot$， 把一个序列分为两个子序列，使得一个序列的所有值都小于等于$pivot$， 另一个序列的所有值都大于等于$pivot$，之后递归处理两个子序列。快排是不稳定排序，如3,4,5,4,1,2，$pivot为3$。以下为Java实现。快排的平均复杂度为$O(nlogn)$，最坏的复杂度为$O(n^2)$。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> temp = nums[x];</div><div class="line">    nums[x] = nums[y];</div><div class="line">    nums[y] = temp;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (start &gt;= end)</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">int</span> pivot = nums[start];</div><div class="line">    <span class="keyword">int</span> left = start, right = end-<span class="number">1</span>;</div><div class="line">    swap(nums, start, end);</div><div class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</div><div class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; nums[left] &lt; pivot)</div><div class="line">            left++;</div><div class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; nums[right] &gt;= pivot)</div><div class="line">            right--;</div><div class="line">        <span class="keyword">if</span>(left &lt; right)</div><div class="line">            swap(nums, left, right);</div><div class="line">    &#125;</div><div class="line">    swap(nums, left, end);</div><div class="line">    quickSort(nums, start, left - <span class="number">1</span>);</div><div class="line">    quickSort(nums, left + <span class="number">1</span>, end);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><p>计数排序直接使用一个数组来保存该元素出现的次数，之后对所有的计数进行累加，反向填充目标数组。一下为Java实现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span>[] countingSort(<span class="keyword">int</span>[] nums) &#123;</div><div class="line">    <span class="keyword">int</span>[] ans = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</div><div class="line">    <span class="keyword">int</span> min =  nums[<span class="number">0</span>], max = nums[<span class="number">0</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        min = Math.min(min, nums[i]);</div><div class="line">        max = Math.max(max, nums[i]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span>[] c = <span class="keyword">new</span> <span class="keyword">int</span>[max-min+<span class="number">1</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        c[nums[i] -  min]++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; c.length; i++)</div><div class="line">        c[i] += c[i-<span class="number">1</span>];</div><div class="line"></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = nums.length-<span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</div><div class="line">        ans[--c[nums[i]-min]] = nums[i];</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><p>基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数进行排序。其复杂度为$O(dn)$，$d$为整数位数。一下为Java代码实现。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxbit</span><span class="params">(<span class="keyword">int</span> nums[], <span class="keyword">int</span> n)</span> <span class="comment">//辅助函数，求数据的最大位数</span></span></div><div class="line"> &#123;</div><div class="line">     <span class="keyword">int</span> maxnums = nums[<span class="number">0</span>];		<span class="comment">///&lt; 最大数</span></div><div class="line">     <span class="comment">/// 先求出最大数，再求其位数，这样有原先依次每个数判断其位数，稍微优化点。</span></div><div class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)</div><div class="line">     &#123;</div><div class="line">         <span class="keyword">if</span> (maxnums &lt; nums[i])</div><div class="line">             maxnums = nums[i];</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">int</span> d = <span class="number">1</span>;</div><div class="line">     <span class="keyword">int</span> p = <span class="number">10</span>;</div><div class="line">     <span class="keyword">while</span> (maxnums &gt;= p)</div><div class="line">     &#123;</div><div class="line">         p *= <span class="number">10</span>;</div><div class="line">         ++d;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> d;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">void</span> <span class="title">radixsort</span><span class="params">(<span class="keyword">int</span> nums[], <span class="keyword">int</span> n)</span> <span class="comment">//基数排序</span></span></div><div class="line"> &#123;</div><div class="line">     <span class="keyword">int</span> d = maxbit(nums, n);</div><div class="line">     <span class="keyword">int</span>[] tmp = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">     <span class="keyword">int</span>[] count = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]; <span class="comment">//计数器</span></div><div class="line">     <span class="keyword">int</span> i, j, k;</div><div class="line">     <span class="keyword">int</span> radix = <span class="number">1</span>;</div><div class="line">     <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;= d; i++) <span class="comment">//进行d次排序</span></div><div class="line">     &#123;</div><div class="line">         <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++)</div><div class="line">             count[j] = <span class="number">0</span>; <span class="comment">//每次分配前清空计数器</span></div><div class="line">         <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">         &#123;</div><div class="line">             k = (nums[j] / radix) % <span class="number">10</span>; <span class="comment">//统计每个桶中的记录数</span></div><div class="line">             count[k]++;</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt; <span class="number">10</span>; j++)</div><div class="line">             count[j] = count[j - <span class="number">1</span>] + count[j]; <span class="comment">//将tmp中的位置依次分配给每个桶</span></div><div class="line">         <span class="keyword">for</span>(j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) <span class="comment">//将所有桶中记录依次收集到tmp中</span></div><div class="line">         &#123;</div><div class="line">             k = (nums[j] / radix) % <span class="number">10</span>;</div><div class="line">             tmp[count[k] - <span class="number">1</span>] = nums[j];</div><div class="line">             count[k]--;</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; n; j++) <span class="comment">//将临时数组的内容复制到nums中</span></div><div class="line">             nums[j] = tmp[j];</div><div class="line">         radix = radix * <span class="number">10</span>;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h2><a href="http://mindhacks.cn/2008/06/13/why-is-quicksort-so-quick/" target="_blank" rel="external">数学之美番外篇：快排为什么那样快</a>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Wang Kun" />
+          <p class="site-author-name" itemprop="name">Wang Kun</p>
+          <p class="site-description motion-element" itemprop="description">期待自己的星辰</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Kun</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yiyu123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
   });
-</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">网站地图</a> |<a href="/atom.xml">订阅本站</a> |<span>联系博主：<a href="mailto:wk476855@126.com" target="_blank" class="fa fa-email"> </a><a href="null" target="_blank" class="fa fa-weibo"></a><a href="https://github.com/wk476855" target="_blank" class="fa fa-github"> </a></span></p><p><span> Copyright &copy;<a href="/." rel="nofollow">Wang Kun</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span><span><a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> Theme </a>by<a rel="nofollow" target="_blank" href="https://github.com/chaooo"> Charles.</a></span></p></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script></div><script>var duoshuoQuery = {short_name:'yiyu123'};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    document.getElementsByTagName('body')[0].appendChild(ds);
-})();
-</script><script type="text/javascript" src="/js/search.json.js?v=1.2.0"></script></body></html>
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  
+
+  
+
+</body>
+</html>
