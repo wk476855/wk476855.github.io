@@ -65,10 +65,10 @@
     <link href="http://yoursite.com/2017/03/22/Java-IO%E6%B5%85%E6%9E%90/"/>
     <id>http://yoursite.com/2017/03/22/Java-IO浅析/</id>
     <published>2017-03-22T06:30:19.000Z</published>
-    <updated>2017-04-03T05:44:14.488Z</updated>
+    <updated>2017-04-03T06:19:15.908Z</updated>
     
     <content type="html"><![CDATA[<p>Java IO即Java中的输入(Input)和输出(Output)。<br>Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，根据操作接口的不同，可以分为基于字节的读写(InputStream, OutputStream)和基于字符的读写(Reader, Writer)。<br>本文将分别介绍这四个类家族及家族间的关系。</p>
-<p>ps:本文类图参照<strong>JDK 8</strong>源码</p>
+<p>ps:本文类图参照<strong>JDK 8</strong>源码<br><a id="more"></a></p>
 <h2 id="InputStream家族"><a href="#InputStream家族" class="headerlink" title="InputStream家族"></a>InputStream家族</h2><p>InputStream家族包括类InputStream及其子孙类，类图如下图所示。<br><img src="/images/diagram.png" alt="InputStream家族类图"></p>
 <ul>
 <li>AutoCloseable和Closeable接口，AutoCloseable是在JDK 7新加入的接口，它使得<a href="http://blog.csdn.net/fireofjava/article/details/7220754" target="_blank" rel="external"><code>try-with-resources</code></a>成为可能，同时改善了Closeable接口中close方法抛出IOException的局限，选择抛出Exception。为了向前兼容，选择让Closeable接口继承AutoCloseable，专门定义IO读写中资源的关闭。</li>
@@ -100,7 +100,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;Java IO即Java中的输入(Input)和输出(Output)。&lt;br&gt;Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，
+      &lt;p&gt;Java IO即Java中的输入(Input)和输出(Output)。&lt;br&gt;Java IO根据读写时是否阻塞，可分为阻塞IO(Blocking IO, BIO)和非阻塞IO(Non-blocking IO, NIO)。 本文主要讲述BIO，其主要类位于java.io包下，根据操作接口的不同，可以分为基于字节的读写(InputStream, OutputStream)和基于字符的读写(Reader, Writer)。&lt;br&gt;本文将分别介绍这四个类家族及家族间的关系。&lt;/p&gt;
+&lt;p&gt;ps:本文类图参照&lt;strong&gt;JDK 8&lt;/strong&gt;源码&lt;br&gt;
     
     </summary>
     
@@ -118,7 +119,7 @@
     <link href="http://yoursite.com/2016/06/05/sorting/"/>
     <id>http://yoursite.com/2016/06/05/sorting/</id>
     <published>2016-06-05T09:09:28.000Z</published>
-    <updated>2017-03-07T07:11:43.656Z</updated>
+    <updated>2017-04-03T06:20:37.654Z</updated>
     
     <content type="html"><![CDATA[<p>排序根据算法的复杂度（平均复杂度）可以大致分为一下三类： </p>
 <ol>
@@ -131,6 +132,7 @@
 <li>稳定排序：冒泡排序（Bubble Sort），插入排序（Inserttion Sort），归并排序（Merge Sort），计数排序（Counting Sort），计数排序（Counting Sort）</li>
 <li>不稳定排序：选择排序（Selection Sort），快速排序（Quick Sort），堆排序（Heap Sort）</li>
 </ol>
+<a id="more"></a>
 <h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>冒泡排序是模拟气泡从水底部上浮的过程，对于一个待排序的序列而言，较小的数会一直向上“浮”，直至所有的较小的数都在较大数的上面（左边），就完成了排序。以下为Java实现， 可以看出冒泡排序是稳定排序。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = nums.length - <span class="number">2</span>; j &gt;= <span class="number">0</span>; j--) &#123;</div><div class="line">            <span class="keyword">if</span>(nums[j] &gt; nums[j+<span class="number">1</span>]) &#123;</div><div class="line">                <span class="keyword">int</span> tmp = nums[j+<span class="number">1</span>];</div><div class="line">                nums[j+<span class="number">1</span>] = nums[j];</div><div class="line">                nums[j] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><p>插入排序主要是通过将当前元素插入到前面已经排好序的序列当中来完成排序。以下为Java实现。插入排序有一种双排的实现方式，每次考虑两个元素$a$, $b$$（a&gt;b）$，先排好$a$，接着从$a$的位置排$b$，可以减少比较次数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span>; j--) &#123;</div><div class="line">            <span class="keyword">if</span>(nums[j-<span class="number">1</span>] &gt; nums[j]) &#123;</div><div class="line">                <span class="keyword">int</span> tmp = nums[j];</div><div class="line">                nums[j] = nums[j-<span class="number">1</span>];</div><div class="line">                nums[j-<span class="number">1</span>] = tmp;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>每次选择未排序序列的最小值，追加到已排好序列的末端。一下为Java实现，选择排序为不稳定排序，如3，3，1。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">         <span class="keyword">int</span> min = nums[i], pos = i;</div><div class="line">         <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; nums.length; j++) &#123;</div><div class="line">             <span class="keyword">if</span>(nums[j] &lt; min) &#123;</div><div class="line">                 min = nums[j];  pos = j;</div><div class="line">             &#125;</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span>(pos != i) &#123;</div><div class="line">             <span class="keyword">int</span> tmp = nums[i];</div><div class="line">             nums[i] = nums[pos];</div><div class="line">             nums[pos] = tmp;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
@@ -147,7 +149,14 @@
       &lt;p&gt;排序根据算法的复杂度（平均复杂度）可以大致分为一下三类： &lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;$O(n^2)$：冒泡排序（Bubble Sort），插入排序（Inserttion Sort），选择排序（Selection Sort）&lt;/li&gt;
-&lt;li&gt;$O(nlogn)$：归并排序
+&lt;li&gt;$O(nlogn)$：归并排序（Merge Sort），堆排序（Heap Sort），快速排序（Quick Sort）&lt;/li&gt;
+&lt;li&gt;$O(n)$：计数排序（Counting Sort），基数排序（Radix Sort）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;排序根据算法的稳定性（对于相同的元素是否能够在排序前后保证相对顺序），可以两类：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;稳定排序：冒泡排序（Bubble Sort），插入排序（Inserttion Sort），归并排序（Merge Sort），计数排序（Counting Sort），计数排序（Counting Sort）&lt;/li&gt;
+&lt;li&gt;不稳定排序：选择排序（Selection Sort），快速排序（Quick Sort），堆排序（Heap Sort）&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
